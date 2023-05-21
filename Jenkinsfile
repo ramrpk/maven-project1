@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage('git clone') {
             steps {
-                sh 'checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'git', url: 'https://github.com/ramrpk/maven-project1.git']])'
                 
+               sh git url: 'https://github.com/ramrpk/maven-project1.git', branch: 'master'
             }
         }
           
