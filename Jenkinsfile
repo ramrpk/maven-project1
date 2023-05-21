@@ -14,9 +14,9 @@ pipeline {
       
             }
         }
-        stage("deploy"){
+        stage("awsdeploy"){
             steps{
-                sshagent(['tomcat']) {
+                sshagent(['deploy_user']) {
                   sh "scp -o StrictHostKeyChecking=no /target/devops91.war  ec2-user@13.235.2.224:/home/ec2-user/apache-tomcat-9.0.75/webapps"
                                  
                 }
