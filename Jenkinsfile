@@ -11,7 +11,19 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'mvn -Dmaven.test.failure.ignore=true install'
+                sh "mv target/*.war target/devops91.war"
             }
         }
+        stage("deploy-dev"){
+            steps{
+                sshagent(['tomcat-dev1']) {
+                 sh """
+                 scp -o StrictHostKeyChecking=no target/devops91.war  
+                 ec2-user@http://13.235.2.224:8080/ :/opt/tomcat/webapps/
+                 ssh ec2-user@http://13.235.2.224:8080/ /opt/tomcat/bin/shutdown.sh
+                 ssh ec2-user@http://13.235.2.224:8080/ /opt/tomcat/bin/startup.sh
+                 """
+            }
+         }
     }
 }
