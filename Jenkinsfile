@@ -3,8 +3,11 @@ pipeline {
     stages {
         stage('git clone') {
             steps {
+                sh 'checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'git', url: 'https://github.com/ramrpk/maven-project1.git']])'
                 
             }
+        }
+          
         stage('Build') {
             steps {
                 sh 'mvn -f hello-app/pom.xml -B -DskipTests clean package'
