@@ -11,7 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'mvn -Dmaven.test.failure.ignore=true install'
-                sh "mv target/*.war target/devops91.war"
+      
             }
         }
         stage("deploy-dev"){
