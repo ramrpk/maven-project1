@@ -23,6 +23,7 @@ pipeline {
                  ssh ec2-user@http://13.235.2.224:8080/ /opt/tomcat/bin/shutdown.sh
                  ssh ec2-user@http://13.235.2.224:8080/ /opt/tomcat/bin/startup.sh
                  """
+                }
             }
          }
     }
