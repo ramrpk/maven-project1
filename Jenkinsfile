@@ -1,23 +1,29 @@
 pipeline {
     agent any
-
     stages {
-        stage('Dev') {
+        stage('git clone') {
             steps {
-                echo 'Hello-Dev-Stage'
-                build quietPeriod: 5, job: 'Tomcat-Docker'
+                
+            }
+        stage('Build') {
+            steps {
+                sh 'mvn -f hello-app/pom.xml -B -DskipTests clean package'
+            }
+            post {
+                success {
+                    echo "Now Archiving the Artifacts....."
+                    archiveArtifacts artifacts: '**/*.jar'
+                }
             }
         }
         stage('Test') {
             steps {
-                echo 'Hello Test-stage'
-                build quietPeriod: 5, job: 'Tomcat-Linux'
+                sh 'mvn -f hello-app/pom.xml test'
             }
-        }
-        stage('Prod') {
-            steps {
-                echo 'Hello Prod-stage'
-                build quietPeriod: 5, job: 'Tomcat-Aws'
+            post {
+                always {
+                    junit 'hello-app/target/surefire-reports/*.xml'
+                }
             }
         }
     }
