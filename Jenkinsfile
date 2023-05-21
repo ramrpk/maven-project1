@@ -14,15 +14,11 @@ pipeline {
       
             }
         }
-        stage("deploy-dev"){
+        stage("deploy"){
             steps{
-                sshagent(['tomcat-dev1']) {
-                 sh """
-                 scp -o StrictHostKeyChecking=no target/devops91.war  
-                 ec2-user@http://13.235.2.224:8080/ :/opt/tomcat/webapps/
-                 ssh ec2-user@http://13.235.2.224:8080/ /opt/tomcat/bin/shutdown.sh
-                 ssh ec2-user@http://13.235.2.224:8080/ /opt/tomcat/bin/startup.sh
-                 """
+                sshagent(['tomcat']) {
+                  sh "scp -o StrictHostKeyChecking=no /target/devops91.war  ec2-user@13.235.2.224:/home/ec2-user/apache-tomcat-9.0.75/webapps"
+                                 
                 }
             }
          }
