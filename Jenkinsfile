@@ -1,26 +1,25 @@
 pipeline {
     agent any
-    stages {
-        stage('clone') {
-            steps {
-                // Get some code from a GitHub repository
-                git url: 'https://github.com/ramrpk/maven-project1.git', branch: 'master'
 
-            }
-        }
-        stage('Build') {
+    parameters {
+        string(name: 'BRANCH_NAME', defaultValue: 'master', description: 'Enter the branch name')
+    }
+
+    stages {
+        stage('Checkout') {
             steps {
-                sh 'mvn -Dmaven.test.failure.ignore=true install'
-      
+                // Checkout the specified branch from the GitHub repository
+                checkout([$class: 'GitSCM',
+                          branches: [[name: "${params.BRANCH_NAME}"]],
+                          userRemoteConfigs: [[
+                              url: 'https://github.com/your-username/your-repo.git',
+                              credentialsId: 'your-credentials-id'
+                          ]]
+                ])
             }
         }
-        stage("awsdeploy"){
-            steps{
-                sshagent(['deploy_user']) {
-                  sh "scp -o StrictHostKeyChecking=no  target/devops91.war  ec2-user@13.235.2.224:/home/ec2-user/apache-tomcat-9.0.75/webapps"
-                                 
-                }
-            }
-         }
+
+        // Add more stages for your pipeline
+        // ...
     }
 }
