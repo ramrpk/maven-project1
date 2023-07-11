@@ -7,3 +7,4 @@ Resources:
       ImageId: ami-a4c7edb2
       InstanceType: t2.micro
       myname :prasanna
+      host : all
